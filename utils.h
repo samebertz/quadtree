@@ -1,8 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <cstring>
+#ifndef __UTILS_H_INCLUDED__ // include guard
+#define __UTILS_H_INCLUDED__
 
-int parse_input (char *);
-int load_script (char *);
 void display_help ();
+
+#endif

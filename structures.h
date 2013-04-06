@@ -1,8 +1,9 @@
+#ifndef __STRUCTURES_H_INCLUDED__ // include guard
+#define __STRUCTURES_H_INCLUDED__
+
 #include <stdlib.h>
 #include <math.h>
 #include <vector>
-
-using namespace std;
 
 class XY 
 {
@@ -40,7 +41,7 @@ class QuadTree
   static const int QT_NODE_CAPACITY = 4;
   
   AABB boundary;
-  vector<XY> points;
+  std::vector<XY> points;
   
   QuadTree * northWest;
   QuadTree * northEast;
@@ -54,5 +55,7 @@ class QuadTree
 
   bool insert (XY);
   void subdivide ();
-  vector<XY> queryRange (AABB);
+  std::vector<XY> queryRange (AABB);
 } ;
+
+#endif

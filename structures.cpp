@@ -1,9 +1,4 @@
-#include <stdlib.h>
-#include <math.h>
-#include <vector>
 #include "structures.h"
-
-using namespace std;
 
 // Simple coordinate object to represent vectors
 XY::XY (float _x, float _y) {
@@ -82,9 +77,9 @@ void QuadTree::subdivide () {
 }
 
 // Find all points which appear within a range
-vector<XY> QuadTree::queryRange (AABB range) {
+std::vector<XY> QuadTree::queryRange (AABB range) {
   // Prepare an array of results
-  vector<XY> pointsInRange;
+  std::vector<XY> pointsInRange;
 
   // Automatically abort if the range does not collide with this quad
   if (!boundary.intersectsAABB(range))
@@ -101,13 +96,13 @@ vector<XY> QuadTree::queryRange (AABB range) {
     return pointsInRange;
 
   // Otherwise, add the points from the children
-  vector<XY> pointsInRangeNorthWest = northWest->queryRange(range);
+  std::vector<XY> pointsInRangeNorthWest = northWest->queryRange(range);
   pointsInRange.insert(pointsInRange.end(), pointsInRangeNorthWest.begin(), pointsInRangeNorthWest.end());
-  vector<XY> pointsInRangeNorthEast = northEast->queryRange(range);
+  std::vector<XY> pointsInRangeNorthEast = northEast->queryRange(range);
   pointsInRange.insert(pointsInRange.end(), pointsInRangeNorthEast.begin(), pointsInRangeNorthEast.end());
-  vector<XY> pointsInRangeSouthWest = southWest->queryRange(range);
+  std::vector<XY> pointsInRangeSouthWest = southWest->queryRange(range);
   pointsInRange.insert(pointsInRange.end(), pointsInRangeSouthWest.begin(), pointsInRangeSouthWest.end());
-  vector<XY> pointsInRangeSouthEast = southEast->queryRange(range);
+  std::vector<XY> pointsInRangeSouthEast = southEast->queryRange(range);
   pointsInRange.insert(pointsInRange.end(), pointsInRangeSouthEast.begin(), pointsInRangeSouthEast.end());
 
   return pointsInRange;
