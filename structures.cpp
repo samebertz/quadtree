@@ -6,27 +6,68 @@
 //	parameters :
 //		float x, the x coordinate of a cartesian coordinate pair
 //		float y, the y coordinate of a cartesian coordinate pair
+//	returns :
+//		?
 //	function :
 //		?
 XY::XY (float x, float y) : x(x), y(y) {} ;
+
+// XY method : returns the x coordinate of the XY
+//	parameters :
+//		?
+//	returns :
+//		float x, the x coordinate of the XY
+//	function :
+//		?
+float XY::get_x () { return x ; } ;
+
+// XY method : returns the y coordinate of the XY
+//	parameters :
+//		?
+//	returns :
+//		float y, the y coordinate of the XY
+//	function :
+//		?
+float XY::get_y () { return y ; } ;
 
 // AABB constructor : creates an axis-aligned bounding box with center coordinate and relative half dimension
 //	parameters :
 //		XY center, the cartesian coordinate pair representing the center of the AABB
 //		XY halfDimension, the cartesian coordinate pair representing the size of a quadrant of the AABB relative to the center
+//	returns :
+//		?
 //	function :
 //		?
 AABB::AABB (XY center, XY halfDimension) : center(center), halfDimension(halfDimension) {} ;
 
+// AABB method : returns the center XY of the AABB
+//	parameters :
+//		?
+//	returns :
+//		XY center, the XY representing the center of the AABB
+//	function :
+//		?
+XY AABB::get_center () { return center ; } ;
+
+// AABB method : returns the half dimension XY of the AABB
+//	parameters :
+//		?
+//	returns :
+//		XY halfDimension, the XY representing the half dimension of the AABB
+//	function :
+//		?
+XY AABB::get_halfDimension () { return halfDimension ; } ;
+
 // AABB method : checks whether a point lies within the AABB
 //	parameters :
 //		XY p, the XY to check against
+//	returns :
+//		bool , representing whether the point is in the AABB or not
 //	function :
 //		checks the position of the point relative to the center against the half dimension
-bool AABB::contains_XY (XY p) {
-	// TODO : check this math, should it be > or >= ?
-	// TODO : use getters instead of accessing members directly
-	return fabs(p.x - center.x) < halfDimension.x && fabs(.y - center.y) < halfDimension.y ;
+bool AABB::contains_XY (XY point) {
+	// TODO : check this math, should it be > or >= ? right now it is exclusive on the boundaries
+	return fabs(point.get_x() - center.x) < halfDimension.x && fabs(point.get_y() - center.y) < halfDimension.y ;
 }
 
 // AABB method : checks whether another AABB intersects the AABB
@@ -38,10 +79,10 @@ bool AABB::intersects_AABB (AABB other) {
 	// TODO : check this math, can it just use contains_XY ?
 	// TODO : use getters instead of accessing members directly
 	// TODO : just return the boolean evaluation of the expression, remove if statement
-  if ((fabs(other.center.x - center.x) <= halfDimension.x && fabs (other.center.y - center.y) <= halfDimension.y)
-   || (fabs(other.center.x - center.x) <= halfDimension.x && fabs(other.halfDimension.y - center.y) <= halfDimension.y)
-   || (fabs(other.halfDimension.x - center.x) <= halfDimension.x && fabs(other.center.y - center.y) <= halfDimension.y)
-   || (fabs(other.halfDimension.x - center.x) <= halfDimension.x && fabs(other.halfDimension.y - center.y) <= halfDimension.y))
+  if ((fabs(other.center.get_x() - center.get_x()) <= halfDimension.get_x() && fabs(other.center.get_y() - center.get_y()) <= halfDimension.get_y())
+   || (fabs(other.center.get_x() - center.get_x()) <= halfDimension.get_x() && fabs(other.halfDimension.get_y() - center.get_y()) <= halfDimension.get_y())
+   || (fabs(other.halfDimension.get_x() - center.get_x()) <= halfDimension.get_x() && fabs(other.center.get_y() - center.get_y()) <= halfDimension.get_y())
+   || (fabs(other.halfDimension.get_x() - center.get_x()) <= halfDimension.get_x() && fabs(other.halfDimension.get_y() - center.get_y()) <= halfDimension.get_y()))
     return true ;
   return false ;
 }
@@ -58,7 +99,7 @@ QT::QT (AABB boundary) : boundary(boundary) {
 }
 
 // QT method : adds an XY to the QT
-//	paramters :
+//	parameters :
 //		XY p, the XY to add to the QT
 //	function :
 //		attempts to put the XY into the QT (if it belongs), but if it won't fit, it puts it in a sub-QT, creating all 4 sub-QTs if they don't exist
@@ -91,14 +132,20 @@ bool QT::insert (XY p) {
     return false;
 }
 
-// create four children which fully divide this quad into four quads of equal area
+// QT method : create subdivisions of the current QT, one each for the quadrants of the current boundary AABB ( all have equal area )
+//	parameters :
+//		?
+//	function :
+//		calculates the half dimension and center XY for each of the quadrants, from which constructs an AABB for each quadrant, and finally a QT from each of these
 void QT::subdivide () {
+	// TODO : rename stuff, maybe put things onto one line
   XY halfDimension = XY(boundary.halfDimension.x / 2, boundary.halfDimension.y / 2);
 
-  XY northWestCenter = XY(boundary.center.x - (boundary.halfDimension.x / 2), boundary.center.y + (boundary.halfDimension.y / 2));
-  XY northEastCenter = XY(boundary.center.x + (boundary.halfDimension.x / 2), boundary.center.y + (boundary.halfDimension.y / 2));
-  XY southWestCenter = XY(boundary.center.x - (boundary.halfDimension.x / 2), boundary.center.y - (boundary.halfDimension.y / 2));
-  XY southEastCenter = XY(boundary.center.x + (boundary.halfDimension.x / 2), boundary.center.y - (boundary.halfDimension.y / 2));
+	// TODO : fix the math here, obviously have some repeat calculations that could be fixed
+  XY northWestCenter = XY(boundary.center.x - halfDimension.x, boundary.center.y + halfDimension.y);
+  XY northEastCenter = XY(boundary.center.x + halfDimension.x, boundary.center.y + halfDimension.y);
+  XY southWestCenter = XY(boundary.center.x - halfDimension.x, boundary.center.y - halfDimension.y);
+  XY southEastCenter = XY(boundary.center.x + halfDimension.x, boundary.center.y - halfDimension.y);
 
   AABB northWestAABB = AABB(northWestCenter, halfDimension);
   AABB northEastAABB = AABB(northEastCenter, halfDimension);
@@ -142,8 +189,6 @@ std::vector<XY> QT::queryRange (AABB range) {
 
   return pointsInRange;
 }
-
-// TODO FIXME 
 
 // TODO : find out if this is necessary
 // arbitrary constant to indicate how many elements can be stored in this quad tree node
