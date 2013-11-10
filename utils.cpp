@@ -17,4 +17,6 @@ void display_help () {
   printf("  quit - quit the application\n");
   printf("  help - display help\n");
   printf("Enter \"help\" followed by a specific command for detailed information.\n");
+
+  //input = fgets(input, 32, stdin);
 }

@@ -1,5 +1,11 @@
+# Vim swap files
+*.swp
+
 # Object files
 *.o
+
+# Precompiled header files
+*.gch
 
 # Libraries
 *.lib

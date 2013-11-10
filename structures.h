@@ -3,9 +3,9 @@
 #ifndef __STRUCTURES_H_INCLUDED__ // include guard
 #define __STRUCTURES_H_INCLUDED__
 
-//#include <stdlib.h>
-//#include <math.h>
-//#include <vector>
+#include <stdlib.h>
+#include <math.h>
+#include <vector>
 
 class XY 
 {

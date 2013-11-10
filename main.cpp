@@ -12,8 +12,12 @@ int main () {
 	// main run loop
   while(1) {
     printf("?> ");
-    input = fgets(input, 32, stdin); 
+    input = fgets(input, 32, stdin);
     printf("%s\n", input);
+
+		if(input == "help") {
+			display_help();
+		}
   }
 
   return 0;
